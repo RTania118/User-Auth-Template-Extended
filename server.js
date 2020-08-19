@@ -10,7 +10,8 @@ const express = require('express'),
   passport = require('passport'),
   flash = require('express-flash'),
   session = require('express-session'),
-  methodOverride = require('method-override');
+  methodOverride = require('method-override'),
+  expressLayouts = require('express-ejs-layouts');
 
 const User = require('./models/user');
 
@@ -24,6 +25,8 @@ initializePassport(
 app.set('view engine', 'ejs');
 // body parser is needed to parse the req body!
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('layout', 'layouts/layout');
+app.use(expressLayouts);
 app.use(flash());
 app.use(
   session({
@@ -34,11 +37,17 @@ app.use(
 );
 
 // Database Connection
-mongoose.connect(process.env.DATABASE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+mongoose.connect(
+  process.env.DATABASE_URL,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  },
+  () => {
+    console.log('Connected to database');
+  }
+);
 
 // function inside passport itself which has all basics for us
 app.use(passport.initialize());
@@ -57,6 +66,6 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/index'));
 
 // Port
-app.listen('3000', () => {
-  console.log('Connected to port 3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Connected to port...');
 });

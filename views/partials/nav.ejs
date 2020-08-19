@@ -1,0 +1,40 @@
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 wg-100"
+  id="mainNavbar"
+>
+  <a class="navbar-brand mr-3" href="/">Brand Name</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon my-toggle-menu"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <% if(!currentUser){ %>
+      <li class="nav-item mr-3">
+        <span id="welcome-guest" class="nav-link" href="#">Welcome, Guest</span>
+      </li>
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="/register">Sign Up</a>
+      </li>
+      <% } else { %>
+      <li class="nav-item mr-3">
+        <span class="nav-link">Welcome, <%= currentUser.name %></span>
+      </li>
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="/logout">Sign Out</a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

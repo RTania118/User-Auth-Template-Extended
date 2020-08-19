@@ -55,6 +55,10 @@ router.post('/register', middleware.checkNotAuthenticated, async (req, res) => {
 
 router.delete('/logout', (req, res) => {
   req.logOut();
+  req.flash(
+    'success',
+    'You have been successfully logged out. Visit again soon!'
+  );
   res.redirect('/login');
 });
 
