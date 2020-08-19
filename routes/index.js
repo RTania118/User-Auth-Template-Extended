@@ -29,6 +29,16 @@ router.get('/register', middleware.checkNotAuthenticated, (req, res) => {
 });
 
 router.post('/register', middleware.checkNotAuthenticated, async (req, res) => {
+  const password = req.body.password;
+  const password2 = req.body.password2;
+
+  // Check and see if the password fields match
+  if (password != password2) {
+    next(new Error('Passwords do not match'));
+    res.redirect('/register');
+  }
+
+  // If passwords do match, continue
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = {
@@ -37,7 +47,6 @@ router.post('/register', middleware.checkNotAuthenticated, async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     };
-    console.log(newUser);
     let user = new User(newUser);
     await user.save();
     await passport.authenticate('local')(req, res, function () {
@@ -53,7 +62,7 @@ router.post('/register', middleware.checkNotAuthenticated, async (req, res) => {
   }
 });
 
-router.delete('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.logOut();
   req.flash(
     'success',

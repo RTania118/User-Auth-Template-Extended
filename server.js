@@ -25,6 +25,7 @@ initializePassport(
 app.set('view engine', 'ejs');
 // body parser is needed to parse the req body!
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
 app.set('layout', 'layouts/layout');
 app.use(expressLayouts);
 app.use(flash());

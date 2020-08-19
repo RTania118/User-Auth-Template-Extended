@@ -6,9 +6,6 @@ const bcrypt = require('bcrypt');
 function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
     const user = await getUserByEmail(email);
-
-    // Check and see if the password fields match
-
     // Check and see if there is a user with that email
     if (user == null) {
       // if we were connecting to server the first arg below would be error, not null

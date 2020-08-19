@@ -1,10 +1,10 @@
 /* Navbar */
 #mainNavbar .nav-link {
-    color: white;
-    font-size: 1.1vw;
+  color: white;
+  font-size: 1.1vw;
 }
 
 .my-form {
-    width: 37%; 
-    margin: 8% auto 0 auto;
+  width: 30%;
+  margin: 8% auto 0 auto;
 }
