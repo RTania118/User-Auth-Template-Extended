@@ -1,0 +1,8 @@
+<h1>
+  <% if(!currentUser){ %> Hi Guest <% } else { %> Hi <%= currentUser.name %> <%
+  } %>
+</h1>
+
+<form action="/logout?_method=DELETE" method="POST">
+  <button type="submit">Log Out</button>
+</form>
