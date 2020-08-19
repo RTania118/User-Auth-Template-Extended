@@ -3,7 +3,7 @@ var router = express.Router({ mergeParams: true });
 const middleware = require('../middleware');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-import Users from '../models/user';
+const User = require('../models/user');
 
 // Routes
 router.get('/', middleware.checkAuthenticated, (req, res) => {
@@ -31,18 +31,28 @@ router.get('/register', middleware.checkNotAuthenticated, (req, res) => {
 router.post('/register', middleware.checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    users.push({
+    const newUser = {
       id: Date.now().toString(),
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
+    };
+    console.log(newUser);
+    let user = new User(newUser);
+    await user.save();
+    await passport.authenticate('local')(req, res, function () {
+      req.flash('success', `Welcome ${user.name}`);
+      res.redirect('/login');
     });
-    res.redirect('/login');
-  } catch {
+  } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      req.flash('error', `That email is already taken!`);
+    }
+    console.log(err);
     res.redirect('/register');
   }
-  console.log(users);
 });
+
 router.delete('/logout', (req, res) => {
   req.logOut();
   res.redirect('/login');
